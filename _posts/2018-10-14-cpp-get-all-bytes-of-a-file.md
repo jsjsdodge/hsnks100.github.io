@@ -1,3 +1,6 @@
+---
+tags: [cpp, buffer]
+---
 ```cpp
 
 #include <fstream>
