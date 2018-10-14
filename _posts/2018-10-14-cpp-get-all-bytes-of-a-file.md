@@ -1,4 +1,4 @@
-[code]
+```
 
 #include <fstream>
 #include <memory>
@@ -16,5 +16,4 @@ int main() {
     std::shared_ptr<uint8_t> buffer(new uint8_t[length], [](uint8_t* p){ delete [] p; });
     infile.read(buffer.get(), length);
 }
-[/code]
-
+```
