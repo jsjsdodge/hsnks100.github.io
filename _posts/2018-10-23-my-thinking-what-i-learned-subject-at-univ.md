@@ -1,7 +1,36 @@
-운영체제
-운영체제는 기본적인 운영체제의 개념, 요구사항, 운영체제를 만들기 위해 어떠한게 고려되야하는지.
-세부적인 의사코드 세트
-동기화 도구나 개념, 실제로 어떻게 멀티프로세싱이 되는지에 관해 잘 알게 되는 과목
+# Operating System
+
+You can learn basical the concept of OS.
+
+Detailed psuedo-code sets.
+
+You can know asyncronous tools(like atomic, crtiical section), how OS do multiprocessing actually.
+
+# Data Communiation
+You can learn material which propagada the data. You can know how communication system communicate with some devices. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 데이터 통신
 데이터가 전파되는 매질이나, 방법에 관한것을 배우고
