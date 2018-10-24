@@ -21,7 +21,7 @@ The topics are:
  Graph theory
  
  
-Logical Design
+# Logical Design
 
 
 digital gate 를 이용하여 원하는 회로를 짜기 위해 기본적인 지식을 쌓는 과목.
