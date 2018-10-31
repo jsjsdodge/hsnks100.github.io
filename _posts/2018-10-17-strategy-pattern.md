@@ -1,8 +1,9 @@
 # Strategy Pattern 
 
-스트래티지 패턴(Strategy pattern)에서는 알고리즘을 구체적으로 정의하지 않고 동작만 제시하고 유연하게 알고리즘의 구체적인 동작을 정의할 수 있게 해준다.
+quote wiki
 
-다음 코드를 보자.
+ The strategy pattern (also known as the policy pattern) is a behavioral software design pattern that enables selecting an algorithm at runtime. Instead of implementing a single algorithm directly, code receives run-time instructions as to which in a family of algorithms to use. (wiki)
+
 
 ```java
 public class ScoreProcessing {
