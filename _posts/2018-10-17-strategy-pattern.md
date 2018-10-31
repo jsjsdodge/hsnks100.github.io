@@ -25,7 +25,9 @@ public class ScoreProcessing {
 } 
 ```
 
-이 코드는 문제가 있다. analyze 에서 너무 많은 기능을 쓰고 있다. min, max 의 기능을 따로 빼야한다.
+There is a problem in code. analyze function has a lot of functions. We need to split min, max. 
+
+splitting function also has a problem. Because 
 
 별도의 메소드로 min, max 를 빼더라도 문제가 있다. 왜냐면 알고리즘을 바꿀 때 많은 코드 변화를 초래한다.
 
