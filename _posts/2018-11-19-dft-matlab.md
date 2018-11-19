@@ -1,3 +1,6 @@
+![image](https://user-images.githubusercontent.com/3623889/48694834-d0bdac00-ec20-11e8-8572-56da94cc145e.png)
+
+
 ```matlab
 
 N0 = 32;  % Sampling time
