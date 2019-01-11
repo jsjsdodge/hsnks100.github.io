@@ -72,3 +72,66 @@ int rsa(void) {
     return 0;
 }
 ```
+
+## enc/dec from key generator
+
+```cpp
+#include <openssl/evp.h>
+#include <openssl/aes.h>
+#include <openssl/err.h>
+#include <openssl/rand.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <cstdio>
+#define KEY_LENGTH  2048
+#define PUB_EXP     3
+
+int rsa(void) {
+    char   msg[KEY_LENGTH/8];  // Message to encrypt
+    char   *encrypt = NULL;    // Encrypted message
+    char   *decrypt = NULL;    // Decrypted message
+    char   *err;               // Buffer for any error messages
+
+    // Generate key pair
+    printf("Generating RSA (%d bits) keypair...", KEY_LENGTH);
+    fflush(stdout);
+    RSA *keypair = RSA_generate_key(KEY_LENGTH, PUB_EXP, NULL, NULL);
+    printf("done.\n");
+
+    // Get the message to encrypt
+    printf("Message to encrypt: ");
+    fgets(msg, KEY_LENGTH-1, stdin);
+    msg[strlen(msg)-1] = '\0';
+
+    // Encrypt the message
+    encrypt = malloc(RSA_size(keypair));
+    int encrypt_len;
+    err = malloc(130);
+    if((encrypt_len = RSA_public_encrypt(strlen(msg)+1, (unsigned char*)msg, (unsigned char*)encrypt,
+                                         keypair, RSA_PKCS1_OAEP_PADDING)) == -1) {
+        ERR_load_crypto_strings();
+        ERR_error_string(ERR_get_error(), err);
+        fprintf(stderr, "Error encrypting message: %s\n", err);
+        goto free_stuff;
+    }
+
+    // Decrypt it
+    decrypt = malloc(encrypt_len);
+    if(RSA_private_decrypt(encrypt_len, (unsigned char*)encrypt, (unsigned char*)decrypt,
+                           keypair, RSA_PKCS1_OAEP_PADDING) == -1) {
+        ERR_load_crypto_strings();
+        ERR_error_string(ERR_get_error(), err);
+        fprintf(stderr, "Error decrypting message: %s\n", err);
+        goto free_stuff;
+    }
+    printf("Decrypted message: %s\n", decrypt);
+
+    free_stuff:
+    RSA_free(keypair);
+    free(encrypt);
+    free(decrypt);
+    free(err);
+
+    return 0;
+}
+```
