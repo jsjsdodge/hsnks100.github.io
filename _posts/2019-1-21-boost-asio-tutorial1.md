@@ -1,5 +1,5 @@
 # asio tutorial1
-거창하게 asio tutorial 이라고 제목은 지어놨는데, 나또한 써보면서 익힌 기능들이나 활용법에 대해서 글을 쓰겠다.
+거창하게 asio tutorial 이라고 제목은 지어놨는데, 나또한 써보면서 익힌 기능들이나 활용법에 대해서 글을 쓰겠다. asio 는 기본적으로 network 에 대해 특화되었지만, file I/O 에 대해서도 충분히 사용가능하다. 그리고 asio 를 쓰면서 흔히 실수하기 쉬운 사례도 들면서 진행하려 한다. 
 
 Boost.Asio is a cross-platform C++ library for network and low-level I/O programming that provides developers with a consistent asynchronous model using a modern C++ approach.
 
