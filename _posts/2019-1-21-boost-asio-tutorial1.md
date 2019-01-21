@@ -25,7 +25,7 @@ SET(srcs
   main.cpp
   )
 
-add_executable(app.out ${srcs})jjjjjjjjj
+add_executable(app.out ${srcs})
 target_link_libraries(app.out
   boost_system
   boost_thread 
@@ -262,6 +262,6 @@ int main()
 
 이 예제에서는 모든 함수 print1, print2 가 하나의 strand 로 묶이는 예제라 서로 간섭을 하지 않는다.
 
-즉, 요약하면 하나의 같은 strand 내의 asyncronos function 은 동시에 실행되지 않는다. (매우 
+즉, 요약하면 하나의 같은 strand 내의 asyncronos function 은 동시에 실행되지 않는다. (매우 중요!)
 
 
