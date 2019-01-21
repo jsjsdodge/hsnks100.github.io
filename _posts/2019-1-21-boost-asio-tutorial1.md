@@ -139,4 +139,87 @@ int main()
 
 # Synchronising handlers in multithreaded programs
 
+```cpp
+//
+// timer.cpp
+// ~~~~~~~~~
+//
+// Copyright (c) 2003-2016 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <iostream>
+#include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/bind.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+class printer
+{
+public:
+  printer(boost::asio::io_service& io)
+    : strand_(io),
+      timer1_(io, boost::posix_time::seconds(1)),
+      timer2_(io, boost::posix_time::seconds(1)),
+      count_(0)
+  {
+    timer1_.async_wait(strand_.wrap(boost::bind(&printer::print1, this)));
+    timer2_.async_wait(strand_.wrap(boost::bind(&printer::print2, this)));
+  }
+
+  ~printer()
+  {
+    std::cout << "Final count is " << count_ << std::endl;
+  }
+
+  void print1()
+  {
+    if (count_ < 10)
+    {
+      std::cout << "Timer 1: " << count_ << std::endl;
+      ++count_;
+
+      timer1_.expires_at(timer1_.expires_at() + boost::posix_time::seconds(1));
+      timer1_.async_wait(strand_.wrap(boost::bind(&printer::print1, this)));
+    }
+  }
+
+  void print2()
+  {
+    if (count_ < 10)
+    {
+      std::cout << "Timer 2: " << count_ << std::endl;
+      ++count_;
+
+      timer2_.expires_at(timer2_.expires_at() + boost::posix_time::seconds(1));
+      timer2_.async_wait(strand_.wrap(boost::bind(&printer::print2, this)));
+    }
+  }
+
+private:
+  boost::asio::io_service::strand strand_;
+  boost::asio::deadline_timer timer1_;
+  boost::asio::deadline_timer timer2_;
+  int count_;
+};
+
+int main()
+{
+  boost::asio::io_service io;
+  printer p(io);
+  boost::thread t(boost::bind(&boost::asio::io_service::run, &io));
+  io.run();
+  t.join();
+
+  return 0;
+}
+```
+
+이 예제에서는 strand 를 이용하여 멀티 스레드 환경에서 콜백 핸들러를 동기화하는 방법을 보여준다. 지금까지의 예제에서는 run 이 싱글스레드로 작동하여 동시성 문제가 발생하지 않았지만, 지금 예제에서는 서로다른 스레드에서 run 이 수행된다. 멀티 스레드 방식은 특정 I/O 처리기가 오래 걸리거나 할 때 스레드를 여러개로 늘려서 수행 할 수 있는 작업은 수행할 수 있도록 한다. 
+
+이 예제에서는 모든 함수 print1, print2 가 하나의 strand 로 묶이는 예제라 서로 간섭을 하지 않는다.
+
+즉, 요약하면 하나의 같은 strand 내의 asyncronos function 은 동시에 실행되지 않는다. (매우 
 
