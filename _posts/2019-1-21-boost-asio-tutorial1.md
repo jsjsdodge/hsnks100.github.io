@@ -5,7 +5,32 @@ Boost.Asio is a cross-platform C++ library for network and low-level I/O program
 
 Boost.Asio 는 네트워크와 저수준 I/O programming 을 위한 크로스 플랫폼 C++ library 다. 관련된 기능을 수행하면서 관련되는 동시성 문제나 lock 문제들을 명시적/암시적으로 modern c++ 스럽게 해결 할 수 있는 도구를 제공해준다.
 
-원론적인 설명을 더 보고 싶으면 boost asio 홈페이지에 들어가서 관련 내용을 더 보시라
+원론적인 설명을 더 보고 싶으면 boost asio 홈페이지에 들어가서 관련 내용을 더 보시라.
+
+# install
+
+```
+sudo apt-get install libboost-all-dev
+```
+
+CMakeLists.txt
+```
+CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
+include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
+SET(srcs
+  main.cpp
+  )
+
+add_executable(app.out ${srcs})
+target_link_libraries(app.out
+  boost_system
+  boost_thread 
+  )
+```
+
+debian 계열 기준으로 위와 같이 설치하면 해당 시스템에서 boost 를 사용할 수 있다.
+
+나머지는 몰라, 알아서 해. 
 
 ```cpp
 //
