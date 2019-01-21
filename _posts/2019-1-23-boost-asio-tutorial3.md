@@ -131,13 +131,13 @@ int main(int argc, char* argv[])
 
 
 원래의 예제에서는 자료 전송을 위해서 메모리상의 상주하는 멤버변수 같은 메모리가 필요했다. Buffer 는 
-```
-buffers
 
-One or more buffers containing the data to be written. 
-Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, 
-which must guarantee that they remain valid until the handler is called.
-```
+ buffers
+
+ One or more buffers containing the data to be written. 
+ Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, 
+ which must guarantee that they remain valid until the handler is called.
+
 
 콜백 핸들러가 호출될 때 까지 이 메모리의 valid 는 보증되어야 한다. 그래서 멤버변수로 잡은 것이다. ConstBufferSequenece 를 이용하면 이러한 작업을 local scope 단위에서 처리할 수 있다.
 
