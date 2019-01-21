@@ -15,8 +15,7 @@ sudo apt-get install libboost-all-dev
 
 CMakeLists.txt
 ```
-CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
-include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
+
 SET(srcs
   main.cpp
   )
