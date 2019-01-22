@@ -5,7 +5,7 @@ url: "https://hsnks100.github.io/"
 # THEME-SPECIFIC CONFIGURATION
 theme_settings:
   # Meta
-  title: Type Theme
+  title: Kangssu's programming world
   avatar: assets/img/avatar.png
   favicon: assets/favicon.ico
   gravatar: # Email MD5 hash
@@ -27,7 +27,7 @@ theme_settings:
   facebook:
   flickr:
   gitlab:
-  github: "hsnks100/hsnks100.github.io"
+  github: 
   google_plus:
   instagram:
   linkedin:  # Full URL
@@ -37,7 +37,7 @@ theme_settings:
   stack_exchange:  # Full URL
   steam:
   tumblr:
-  twitter: "twitter"
+  twitter: 
   wordpress:
   youtube:
 
