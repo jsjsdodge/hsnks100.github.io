@@ -67,7 +67,7 @@ theme_settings:
   post_navigation: false
 
 # PAGINATION
-paginate: 5
+paginate: 20
 
 
 # BUILD SETTINGS
