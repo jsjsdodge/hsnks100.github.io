@@ -1,4 +1,4 @@
-Vim Script 를 배워봅시다.
+# Vim Script 를 배워봅시다.
 이 페이지는 vim 사용법을 알려주는 페이지는 아니다. 좀 더 vim 고급 사용자로 가기 위해서 vim-script 를 배우는 페이지다.
 
 이 페이지를 읽기전 기본적인 buffer, window, tab, vim operator(dd, x, i) 와, insert/ex/visual mode 등에 대해 익숙한 사용자를 대상으로 한다.
@@ -44,7 +44,7 @@ vim 에서는 간단히 :e ~/.vimrc 정도만 입력해도 자기 시스템에 �
 으로도 확인 할 수 있다.
 
 
-Echo Message
+# Echo Message
 vim 스크립트를 본격적으로 배우기 전에 기본적인 변수확인이나 디버깅 방법을 알아야 한다.
 
 우리가 지금까지 프로그래밍을 하면서 디버깅을 할 때 로그를 남기면서 한것과 같은 이치다.
@@ -63,7 +63,7 @@ vim 에서는 echo 내장 명령어를 통해서 변수값을 간단하게 확�
 
 좀 더 알고 싶으면 :help echom, :help echo 를 활용하자.
 
-comment
+# comment
 vim 에서 가독성을 높이기 위해서 주석을 달 수 있다.
 
 ~/.vimrc
@@ -73,7 +73,7 @@ nnoremap <leader>feR :source ~/.vimrc<CR>
 " 뒤에 나오는 문자는 전부 무효처리 된다.
 
 
-options
+# options
 Vim 은 어떻게 동착할지에 대한 많은 옵션을 가지고 있다.
 
 대부분 옵션들은 on/off 식으로 작동하게 되는데 :set XXX, :set noXXX 식으로 XXX 에 대한 사항을 toggle 할 수 있다.
@@ -93,7 +93,7 @@ on/off 토글하기 위해서는 ! 를 붙인다.
 끝에 ? 를 붙인다.
 
 
-Basic Mapping
+# Basic Mapping
 Vim 의 장점중 하나가 키맵핑을 이용해서 동작을 바꿀 수 있다는 점이다.
 
 :map _ x
@@ -101,7 +101,7 @@ Vim 의 장점중 하나가 키맵핑을 이용해서 동작을 바꿀 수 있�
 
 특별한 키를 위해서는 <> 으로 묶어서 표현하기도 한다. 예를 들면 <space>, <C-d> 정도가 될 수 있겠다.
 
-Modal Mapping
+# Modal Mapping
 map 을 쓸 때 특정모드에서만 가능하도록 매핑을 할 수 있다.
 
 :imap jj <ESC>j
@@ -114,7 +114,7 @@ vim 에서는 이러한 모드가 여러가지가 있는데
 
 꼭 확인해봐야한다. 이 중 에서 우리가 주로 쓰는 매핑은 사람마다 다르겠지만 대체로 imap, vmap, nmap 이 3가지를 쓴다.
 
-Recursive Mapping
+# Recursive Mapping
 :nmap x dd
 :nmap _ x
 라고 입력후에 어떤 내용이 있는 텍스트 위에서 _ 를 타이핑하면 어떤 일이 일어날까?
@@ -129,7 +129,7 @@ vim 은 _ 를 입력받아서 x 를 타이핑하게 하고, 또 vim 은 x 는 dd
 :nnoremap _ x
 라고 해보고 아까 했던 행동을 해보자.
 
-Leaders
+# Leaders
 앞에서 정했 듯
 
 :nnoremap x dd
@@ -159,7 +159,7 @@ local 하에서 leader key 를 지정하고 싶다면
 
 
 
-Load Script
+# Load Script
 자신이 만드는 스크립트는 앞서 설명했 듯 $MYVIMRC 경로에 저장해놓으면 vim 을 재시작할 때 불러온다고 했다.
 
 그 경로는 :echo $MYVIMRC 를 통해 경로를 알 수 있었다.
@@ -217,7 +217,7 @@ bi"<esc>ww...
 감이 조금 "왔으면" 한다.
 
 
-Buffer-Local Options and Mappings
+# Buffer-Local Options and Mappings
 key mapping
 buffer-local 기준으로 옵션과 키매핑을 지정할 수도 있다.
 
@@ -232,7 +232,7 @@ nerdtree 가 설치되어있다면 nerdtree 를 열고 :nnoremap <buffer> 를 �
 
 nerdtree 에서만 사용되는 키매핑을 볼 수 있다.
 
-options & leader key
+# options & leader key
 set number 과 같은 일반 옵션도 buffer 기준으로 지정 할 수 있다.
 
 setlocal 을 통해 지정한다.
@@ -249,7 +249,7 @@ leader key 도 마찬가지로
 :help maplocalleader
 참고하면 된다.
 
-Shadowing
+# Shadowing
 :nnoremap <buffer> - x
 :nnoremap - i
 두가지 매핑을 실행하고 - 를 눌렀을 때 어떤 결과가 나올까?
@@ -259,7 +259,7 @@ vim 은 buffer 명령어를 우선순위로 잡는다.
 일반적인 프로그래밍 방식이랑 일치하며 이치에 맞아보인다.
 
 
-Auto Commands
+# Auto Commands
 앞서 vimrc 로드를 위해 잠깐 소개했던 auto commands 를 정식으로 소개한다.
 
  
@@ -277,7 +277,7 @@ autocmd 는 특정한 이벤트가 발생할 때 실행할 명령어를 등록�
 
 :call function()
 함수를 호출 할 수도 있다.
-
+```
 :autocmd BufNewFile * :write
          ^          ^ ^
          |          | |
@@ -286,6 +286,7 @@ autocmd 는 특정한 이벤트가 발생할 때 실행할 명령어를 등록�
          |          대상이 되는 파일의 패턴
          |
          이벤트 종류
+```	 
 여기서 이벤트 종류와 파일의 패턴에 대해서 좀 더 알아보고 싶으면
 
 :help event
@@ -298,7 +299,7 @@ normal 명령어와 같이 써서 일련의 키시퀀스도 전달가능하다.
  
 :autocmd BufWritePre *.vimrc normal gg=G
 
-Multiple Events
+# Multiple Events
 :autocmd BufWritePre *.virmc normal gg=G 
 :autocmd BufRead *.virmc normal gg=G
 위 명령어는
@@ -313,7 +314,7 @@ autocmd FileType
 :autocmd FileType python     nnoremap <buffer> _ I#<esc>
 FileType 에 따라 명령어를 지정할 수도 있다.
 
-Buffer-local autocommands
+# Buffer-local autocommands
 :au CursorHold <buffer>  echo 'hold'
 :au BufNewFile *.txt au CursorHold <buffer>  echo 'hold txtfile'
 :au BufNewFile *.js au CursorHold <buffer>  echo 'hold jsfile'
@@ -326,7 +327,7 @@ autocmd 또한 buffer 단위로 명령을 지정할 수 있다.
 :help autocmd-buflocal
 autocmd-buflocal 에 더 알아보고 싶으면 위 명령어를 통해 더 확인해보자.
 
-Auto Command Groups
+# Auto Command Groups
 위에 소개했던 autocmd 는 사실 한가지 문제가 있었다.
 
 이를 알아보기 위해
@@ -388,7 +389,7 @@ augroup END
 
 return person.get_pets(type="", fluffy_only=True)
 
-Status Lines
+# Status Lines
 vim 에서 제공하는 기능중에 현재 상태를 보여주는 곳이 있다. 그곳이 status line 이다.
 
  
@@ -397,7 +398,7 @@ vim 에서 제공하는 기능중에 현재 상태를 보여주는 곳이 있다
 
 마치 C언어의 printf 를 보는 듯 하다.
 
-General Format
+# General Format
 The option consists of printf style '%' items interspersed with
 normal text.  Each status line item is of the form:
   %-0{minwid}.{maxwid}{item}
@@ -414,7 +415,7 @@ help statusline 을 통해 일반적인 표현법을 보면 위처럼 설명이 
 해서 어떤게 나오는지 살펴보자.
 
 
-Variables
+# Variables
 지금까지 단일 명령어에 대한 것만 우리는 다룰 수 있었다.
 
 이번장 부터는 정말 프로그래밍적인 관점에서 vim script 를 다뤄보려 한다.
@@ -431,7 +432,7 @@ test 대신 숫자를 쓸 수도 있다.
 :echo t
 즉, vim script 변수엔 타입이 없다. 그냥 대입하면 된다.
 
-Option as Variables
+# Option as Variables
 vim option 들을 변수로써 다룰 수도 있다.
 
 예를 들어 sw(shiftwidth) 값을 echo 로 출력해보자.
@@ -459,7 +460,7 @@ setlocal 을 :let 로서 제어하는 변수가 있을것이다.
 :let &l:sw=8
 이것은 :setlocal sw=8 과 동일한 효과를 낸다. 앞서 설명했지만 let 을 이용한 방식은 프로그래밍적으로 유연성을 제공해준다.
 
-Registers as Variables
+# Registers as Variables
 당장 :reg 를 쳐보자.
 
 우리가 vim 을 쓰면서 등록해뒀던 registers 가 보일것이다.
@@ -507,7 +508,7 @@ int a = 3; {
 를 통해 한번 어떤 스코프가 있는지 살펴보자.
 
 이번에는 친절하게 help 문서를 직접 가져왔다.
-
+```
 |buffer-variable|    b:	  Local to the current buffer.
 |window-variable|    w:	  Local to the current window.
 |tabpage-variable|   t:	  Local to the current tab page.
@@ -516,14 +517,16 @@ int a = 3; {
 |script-variable|    s:	  Local to a |:source|'ed Vim script.
 |function-argument|  a:	  Function argument (only inside a function).
 |vim-variable|       v:	  Global, predefined by Vim.
+```
+
 언제나 help 문서를 보는 버릇을 들이자.
 
-Control Statements
+# Control Statements
 이 장부터는 test.vim 와 같은 vim 을 열어놓고 테스트 하는게 편하다.
 
 
 
-if
+## if
 먼저 if 문을 확인하자.
 
 test.vim
@@ -560,7 +563,7 @@ echom "string10" + 10
 
 이제 다시 한번 위에 처음 제시한 test.vim 을 보면 결과가 빠르게 이해가 될 것이다.
 
-Else and Elseif
+## Else and Elseif
 if 가 있으면 당연 else 가 있다.
 
 test.vim
@@ -575,7 +578,7 @@ else
 endif
 위 예문으로 확인하자.
 
-Condition
+## Condition
 위에서 다룬 비교 명령만으론 정말로 부족하다.
 
 문자열에 대해서 비교를 해보자.
@@ -643,7 +646,7 @@ indexing 에서 음수가 나오면 -1 은 마지막 요소를 가리킨다.
 :echo "hello"[1:2]
 실행해보면 el 이 나온다.
 
-Concatenation
+# Concatenation
 :echo "hello"+"world"
 :echo "hello"."world"
 :echo [1,2] + [3]
@@ -721,7 +724,7 @@ apple price : 1000 banana price : 2000 pineapple price : 3000
 
 이는 while 로 처리해야 한다.
 
-while
+# while
 while 은 아주 오래된 고전적인 루프문이다.
 
 이전에 c-style 의 for 문이 없다고 했지만 while 은 이를 100% 대체할 수 있다.
@@ -762,7 +765,7 @@ vim script 는 다른 언어랑 다르게 조금 문법이 조잡한 편이라�
 
 지금부터는 내가 내는 문제들을 직접 코딩을 하면서 익혀야 한다. 손이 기억을 해야 나중에 필요한 것들을 무리없이 만들 수 있다.
 
-Dictionary
+# Dictionary
 Dictionary 형태의 자료형에 대해서 소개한다.
 
 이 자료형은 매우매우 중요하다. 기본 string, number 타입은 당연히 알아야 하고 앞서 소개했던 list 도 많이 쓰지만, Dictionary 자료형태도 무지무지하게 많이 쓰인다.
@@ -801,7 +804,7 @@ echo c["banana"]
 하지만 한가지 제한이 있는데, key 는 무조건 문자열(문자)만 들어올 수 있다.
 
 
-Remove
+# Remove
 let c = {"apple":1000, "banana":2000, "pineapple":3000, "watermelon":10000} 
 let t = remove(c, "apple") 
 echo t
@@ -814,7 +817,7 @@ echo c
 
 반면 unlet 은 그렇지 않다. remove 쓸건지 unlet 을 쓸건지는 순전히 개인적인 취향차이라고 볼 수 있다.
 
-Value-Check
+# Value-Check
 이 때 없는 값을 조회해보자. 예를 들면 c["dsjflajdfl"] 이러한 값을 echo 로 출력해보자.
 
 error가 날 것이다. vim 은 매우 유연하여 스크립트에 일부 에러가 나더라도 밑의 문장을 계속하여 실행한다. 하지만 이러한 메세지가 뜬다면 사용자도 신뢰를 가지지 못할 것이고, 더러운 메시지가 vim 을 덮을 것이다.
@@ -866,7 +869,7 @@ Functions
 
 어떻게 하는지 코드로 살펴보자.
 
-Basic
+# Basic
 function Foo()
     echom "hello"
 endfunction
@@ -891,7 +894,7 @@ call s:foo()
 :help internal-variables
 을 이용해서 변수를 확인해보자.
 
-redefinition
+# redefinition
 실행했던 코드에서 다시 한번 :so % 를 해서 실행해보자.
 
 이미 함수가 존재한다고 에러를 뿜는다. 해결은 간단하다.
@@ -902,7 +905,7 @@ endfunction
 call s:foo()
 앞에 ! 를 붙이면 이미 함수가 정의되어있더라도 에러를 무시하게 된다.
 
-Parameters
+# Parameters
 다른 언어에서도 마찬가지이겠지만 vim 함수에는 파라메터가 들어갈 수 있다.
 
 function! s:power(name)
@@ -963,7 +966,7 @@ call s:power("man")
 
 이로서 vim 의 function 에 대해서 조금 맛을 봤다. 아직은 살짝 맛만 본 단계지만 활용하는건 너의 몫이다.
 
-Strings
+# Strings
 vim 은 기본적으로 텍스트 에디터가 무엇인가? 문자열을 다루는 소프트웨어다. 그 문자열을 다루는 소프트웨어의 스크립트에서 가장 중요한 것은 문자열을 처리하는 방법이다.
 
 그래서 이 장은 매우 중요하다.
@@ -1011,7 +1014,7 @@ Special Characters
 
 그렇다. 는 ' 로 나온다.
 
-String Functions
+# String Functions
 :echo split("sang moo hospital")
 :echo split("sang|moo|hospital", "|")
 결과는 둘다, ['sang', 'moo', 'hospital']
@@ -1026,7 +1029,7 @@ String Functions
 join 의 인자로 list 를 받는다. list 를 두번 째 인자를 끼워 합친 결과가 리턴된다.
 
 
-Excute
+# Excute
 Excute~Excute Normal! 까지 굉장히 중요한 장이다.
 
 사실 목차를 이것부터 해야한다고도 생각할 정도로 뭔가 만들 때 비중이 높은 챕터고, 개념을 확실히 짚고 넘어가야 한다.
@@ -1052,7 +1055,7 @@ execute "echo 'hello'"
 
 
 
-Normal
+# Normal
 :norm[al][!] {commands}
 이 때 commands 는 normal mode 에서 사용되는 키보드 스트로크의 집합이다.
 
@@ -1079,7 +1082,7 @@ banana 위에서
 으로 실행해봐라.
 
 
-Excute Normal!
+# Excute Normal!
 getpid 는 현재 프로세스의 아이디를 가져온다.
 
 전장에서 배웠던 execute 와 normal 과의 절묘한 조합으로
