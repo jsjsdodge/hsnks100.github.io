@@ -206,16 +206,14 @@ bi"<esc>ww...
 으로 시도해보았다. 하지만 ww 에서 다음단어의 시작으로 가서 실패했다.
 
 두번 째 시도에선 bi"<esc>ea" 으로 성공했다.
-
+```
 <leader>S[
 으로 매핑을 한다고 하면
 
 :nnoremap <leader>S[ bi"<esc>ea"
 이렇게 하면 된다.
-
-
+```
 감이 조금 "왔으면" 한다.
-
 
 # Buffer-Local Options and Mappings
 key mapping
