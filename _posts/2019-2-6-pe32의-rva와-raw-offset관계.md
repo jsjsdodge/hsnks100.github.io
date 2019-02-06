@@ -28,8 +28,6 @@ RVA to RAW offset 을 이용하여 간단한 바이너리 패치를 해보자.
 
 아래 공간을 보니 아래쪽에 null padding 문자가 잔뜩 있다. 0x4020b2 부분의 데이터 영역을 이용하여 문자열 패치를 해보겠다.
 
-![image](https://user-images.githubusercontent.com/3623889/52314394-c7f59e80-29f5-11e9-9741-f0d64de8feac.png)
-
 먼저 push 402012 를 push 0x4020b2 로 고쳐준다. 그리고 실행파일을 gl.exe 로 저장한다.
 
 이제 gl.exe 의 0x4020b2 에 대응하는 RAW offset 을 찾아서 hex editor 로 패치하면 끝난다.
