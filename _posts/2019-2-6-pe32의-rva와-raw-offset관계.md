@@ -12,6 +12,10 @@ RVA 는 메모리상의 주소, RAW 는 파일상의 오프셋으로 정의할 �
  1. RVA 가 속한 섹션 s 를 찾는다.
  2. RAW = RVA - s.VirtualAddress + s.PointerToRawData
  
+ 
+ 실험용 exe: [01.zip](https://github.com/hsnks100/hsnks100.github.io/files/2834481/01.zip)
+ 
+ 
 ![image](https://user-images.githubusercontent.com/3623889/52314093-5bc66b00-29f4-11e9-9730-fe597c1b4968.png)
 
 RVA to RAW offset 을 이용하여 간단한 바이너리 패치를 해보자.
