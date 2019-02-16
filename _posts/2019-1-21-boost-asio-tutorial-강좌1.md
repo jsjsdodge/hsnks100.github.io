@@ -270,3 +270,316 @@ int main()
 즉, 요약하면 하나의 같은 strand 내의 asyncronos function 은 동시에 실행되지 않는다. (매우 중요!)
 
 
+# TCP Server Program
+
+
+```cpp
+//
+// server.cpp
+// ~~~~~~~~~~
+//
+// Copyright (c) 2003-2016 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <ctime>
+#include <iostream>
+#include <string>
+#include <boost/array.hpp>
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
+
+using boost::asio::ip::tcp;
+
+std::string make_daytime_string()
+{
+    using namespace std; // For time_t, time and ctime;
+    time_t now = time(0);
+    return ctime(&now);
+}
+
+
+class tcp_connection
+    : public boost::enable_shared_from_this<tcp_connection>
+{
+public:
+    typedef boost::shared_ptr<tcp_connection> pointer;
+
+    static pointer create(boost::asio::io_service& io_service) {
+        return pointer(new tcp_connection(io_service));
+    }
+
+    tcp::socket& socket() {
+        return socket_;
+    }
+
+    void start() {
+        message_ = make_daytime_string();
+
+        boost::asio::async_write(socket_, boost::asio::buffer(message_),
+                                 boost::bind(&tcp_connection::handle_write, shared_from_this()));
+    }
+
+private:
+    tcp_connection(boost::asio::io_service& io_service)
+        : socket_(io_service)
+    {
+    }
+
+    void handle_write() {
+    }
+
+    tcp::socket socket_;
+    std::string message_;
+};
+
+class tcp_server
+{
+public:
+    tcp_server(boost::asio::io_service& io_service)
+        : acceptor_(io_service, tcp::endpoint(tcp::v4(), 13))
+    {
+        start_accept();
+    }
+
+private:
+    void start_accept()
+    {
+        tcp_connection::pointer new_connection =
+            tcp_connection::create(acceptor_.get_io_service());
+
+        acceptor_.async_accept(new_connection->socket(),
+                               boost::bind(&tcp_server::handle_accept, this, new_connection,
+                                           boost::asio::placeholders::error));
+    }
+
+    void handle_accept(tcp_connection::pointer new_connection,
+                       const boost::system::error_code& error) {
+        if (!error) {
+            new_connection->start();
+        }
+
+        start_accept();
+    }
+
+    tcp::acceptor acceptor_;
+};
+
+int main()
+{
+    try {
+
+        auto t = boost::thread([]() {
+                boost::asio::io_service io_service;
+                tcp_server server1(io_service);
+                io_service.run();
+            });
+
+        t.detach();
+    }
+    catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    getchar();
+
+    return 0;
+}
+
+```
+
+기본적인 TCP program 형태를 asio 로 작성한 모습이다. tcp_server 는 새로운 클라이언트를 받아들이는 역할을 한다. 새로운 클라이언트를 받아들였으면, tcp_connection 에서 각 클라이언트에 대한 처리 로직이 들어가는 구조다. tcp_server 에서 async_accept 를 통해 새 클라이언트를 받으면 내부에서 tcp_connection 을 생성하여 async 로직을 등록한다. 예제에서는 async_write 로 바로 답하고 있지만 보통은 클라이언트가 요청을 하기 때문에, read -> write 서버구조로 만든다.
+
+```cpp
+class tcp_connection
+    : public boost::enable_shared_from_this<tcp_connection>
+```
+
+해당 구조에 대해 이야기가 필요하다. 
+
+이 소스에서 tcp_connection 은 shared_ptr 로 되어있다. 그리고 함수 안에서 생성되기 때문에 생성된 곳의 블록이 끝나면 소멸할 타이밍을 맞는다.
+
+```cpp
+    static pointer create(boost::asio::io_service& io_service) {
+        return pointer(new tcp_connection(io_service));
+    }
+
+    
+    void start() {
+        message_ = make_daytime_string();
+
+        boost::asio::async_write(socket_, boost::asio::buffer(message_),
+                                 boost::bind(&tcp_connection::handle_write, shared_from_this()));
+    }
+```
+
+생성한 쪽에서 tcp_connection::start 를 호출하게 되는데 문제는 async_write 가 실행되지만 tcp_connection 의 수명이 해당 블록이 끝나자마자 소멸이 되어 handle_write 가 호출되지 못한다. 그리하여 io_service 는 모든 작업이 완료된 것으로 알고 io_service::run 이 리턴되게된다. 
+
+그래서 위 코드와 같이 this 대신에 shared_from_this 를 쓰면 해당 콜백이 불러질 때 까지 this 객체는 수명이 연장된다. 이렇게 중요한 shared_from_this 를 쓰기 위해서는 boost::enable_shared_from<T> 를 상속 받아야 한다. 
+
+이와 같은 템플릿 자가 상속 패턴을 CRTP 라고 하니 궁금한 사람은 따로 구글링해보기 바란다.
+
+
+  
+  
+# boost asio shared_const_buffer
+
+
+```cpp
+
+//
+// reference_counted.cpp
+// ~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2016 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <boost/asio.hpp>
+#include <iostream>
+#include <memory>
+#include <utility>
+#include <vector>
+
+using boost::asio::ip::tcp;
+
+// A reference-counted non-modifiable buffer class.
+class shared_const_buffer
+{
+public:
+  // Construct from a std::string.
+  explicit shared_const_buffer(const std::string& data)
+    : data_(new std::vector<char>(data.begin(), data.end())),
+      buffer_(boost::asio::buffer(*data_))
+  {
+  }
+
+  // Implement the ConstBufferSequence requirements.
+  typedef boost::asio::const_buffer value_type;
+  typedef const boost::asio::const_buffer* const_iterator;
+  const boost::asio::const_buffer* begin() const { return &buffer_; }
+  const boost::asio::const_buffer* end() const { return &buffer_ + 1; }
+
+private:
+  std::shared_ptr<std::vector<char> > data_;
+  boost::asio::const_buffer buffer_;
+};
+
+class session
+  : public std::enable_shared_from_this<session>
+{
+public:
+  session(tcp::socket socket)
+    : socket_(std::move(socket))
+  {
+  }
+
+  void start()
+  {
+    do_write();
+  }
+
+private:
+  void do_write()
+  {
+    std::time_t now = std::time(0);
+    shared_const_buffer buffer(std::ctime(&now));
+
+    auto self(shared_from_this());
+    boost::asio::async_write(socket_, buffer,
+        [this, self](boost::system::error_code /*ec*/, std::size_t /*length*/)
+        {
+        });
+  }
+
+  // The socket used to communicate with the client.
+  tcp::socket socket_;
+};
+
+class server
+{
+public:
+  server(boost::asio::io_service& io_service, short port)
+    : acceptor_(io_service, tcp::endpoint(tcp::v4(), port)),
+      socket_(io_service)
+  {
+    do_accept();
+  }
+
+private:
+  void do_accept()
+  {
+    acceptor_.async_accept(socket_,
+        [this](boost::system::error_code ec)
+        {
+          if (!ec)
+          {
+            std::make_shared<session>(std::move(socket_))->start();
+          }
+
+          do_accept();
+        });
+  }
+
+  tcp::acceptor acceptor_;
+  tcp::socket socket_;
+};
+
+int main(int argc, char* argv[])
+{
+  try
+  {
+    if (argc != 2)
+    {
+      std::cerr << "Usage: reference_counted <port>\n";
+      return 1;
+    }
+
+    boost::asio::io_service io_service;
+
+    server s(io_service, std::atoi(argv[1]));
+
+    io_service.run();
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
+
+  return 0;
+}
+
+```
+
+
+원래의 예제에서는 자료 전송을 위해서 메모리상의 상주하는 멤버변수 같은 메모리가 필요했다. Buffer 는 
+
+ buffers
+
+ One or more buffers containing the data to be written. 
+ Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, 
+ which must guarantee that they remain valid until the handler is called.
+
+
+콜백 핸들러가 호출될 때 까지 이 메모리의 valid 는 보증되어야 한다. 그래서 멤버변수로 잡은 것이다. ConstBufferSequenece 를 이용하면 이러한 작업을 local scope 단위에서 처리할 수 있다.
+
+그러기 위해서는 몇가지 구현사항이 필요하다. ConstBufferSequence 를 만족하기 위해서는 
+
+```cpp
+  typedef boost::asio::const_buffer value_type;
+  typedef const boost::asio::const_buffer* const_iterator;
+  const boost::asio::const_buffer* begin() const { return &buffer_; }
+  const boost::asio::const_buffer* end() const { return &buffer_ + 1; }
+```
+
+위 구현이 필요한데, 자세한 것은 https://www.boost.org/doc/libs/1_69_0/doc/html/boost_asio/reference/ConstBufferSequence.html 참고하라.
+
+
+  
