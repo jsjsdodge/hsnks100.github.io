@@ -1,4 +1,4 @@
-#Vim  Script 를 배워봅시다.==
+# Vim  Script 를 배워봅시다.==
 이 페이지는 vim 사용법을 알려주는 페이지는 아니다. 좀 더 vim 고급 사용자로 가기 위해서 vim-script 를 배우는 페이지다.
 
 이 페이지를 읽기전 기본적인 buffer, window, tab, vim operator(dd, x, i) 와, insert/ex/visual mode 등에 대해 익숙한 사용자를 대상으로 한다.
@@ -12,7 +12,7 @@
 * 샘플 plugin 제작을 통해 실제 vim 생태에 기여하는 방법.
 
 
-#.vimrc ==
+# .vimrc ==
 
 기본적으로 vim 을 시작하게 되면 로드하게 되는 script 파일은 .vimrc 파일이다.
 
