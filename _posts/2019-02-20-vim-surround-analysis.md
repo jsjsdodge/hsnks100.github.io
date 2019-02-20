@@ -130,7 +130,7 @@ endfunction
 
 
 ```
-function! s:opfunc(type,...) " {{{1
+function! s:opfunc(type,...) 
   let char = s:inputreplacement()
   if char == ""
     return s:beep()
@@ -199,7 +199,7 @@ endfunction
 
 
 ```
-function! s:opfunc(type,...) " {{{1
+function! s:opfunc(type,...) 
   let char = s:inputreplacement()
   let reg = '"'
   let type = a:type
