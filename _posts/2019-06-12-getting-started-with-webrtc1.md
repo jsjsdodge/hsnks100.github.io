@@ -33,8 +33,17 @@ chrome extension 을 통해 01-webrtc-web-loopback 를 열어서 http://localhos
 ![image](https://user-images.githubusercontent.com/3623889/59333534-7a869680-8d33-11e9-9e86-17845d88f98b.png)
 
 기본적인 webrtc 구동에 관한 Sequence Diagram 이다. 위 다이어그램을 보면서 아래 코드를 읽어야 한다.
+그래도 이해하는데 필요한 SDP, ICE Candidate 에 대해서 살짝만 써보려 한다.
 
+![image](https://user-images.githubusercontent.com/3623889/59395571-99cb0580-8dbf-11e9-8f09-0012edb227b9.png)
 
+`ICE (Interactive Connectivity Establishment, RFC 5245)`
+
+peer-to-peer 간 다이렉트로 통신을 위한 기술
+ICE 는 이미지를 통해 이해하는 것이 편하다.
+이미지와 같이 peer-to-peer 간에는 여러 가지 경로를 통해 연결될 수 있다.
+
+Candidate 는 각 peer 의 setLocalDescription 의 콜백을 통해 구해지며, 최종적으로 서로에게 전송한다 그러면 각 peer 는 서로에게 Connectivity Check 를 하게 되고 p2p 로 
 
 ```js
 'use strict';
