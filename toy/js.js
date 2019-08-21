@@ -196,9 +196,9 @@ function astar(x, y, goalX, goalY) {
 
             setTimeout(function() {
                 abc();
-            }, 5000);
+            }, 2000);
         }
-    }, 5000);
+    }, 2000);
 }
 
 var map = [];
