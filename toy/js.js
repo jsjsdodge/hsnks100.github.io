@@ -54,6 +54,8 @@ function drawMap(map) {
         richText.y = (keyObj.y - 1) * height;
         app.stage.addChild(richText);
     }
+
+    drawPlayer(goalX, goalY, 0x00FF00);
 }
 
 function drawPlayer(x, y, color) {
