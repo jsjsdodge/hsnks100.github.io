@@ -46,6 +46,11 @@ function drawMap(map) {
         richText.x = (keyObj.x - 1) * width;
         richText.y = (keyObj.y - 1) * height;
         app.stage.addChild(richText);
+
+        const richText2 = new PIXI.Text('f: ' + (openList[key].g + openList[key].h), style);
+        richText2.x = (keyObj.x - 1) * width;
+        richText2.y = (keyObj.y - 1) * height + height / 2;
+        app.stage.addChild(richText2);
     }
     for(var key in closeList) { 
         const richText = new PIXI.Text('g: ' + closeList[key].g + ', h: ' + closeList[key].h, style);
@@ -53,6 +58,11 @@ function drawMap(map) {
         richText.x = (keyObj.x - 1) * width;
         richText.y = (keyObj.y - 1) * height;
         app.stage.addChild(richText);
+
+        const richText2 = new PIXI.Text('f: ' + (closeList[key].g + closeList[key].h), style);
+        richText2.x = (keyObj.x - 1) * width;
+        richText2.y = (keyObj.y - 1) * height + height / 2;
+        app.stage.addChild(richText2);
     }
 
     drawPlayer(goalX, goalY, 0x00FF00);
