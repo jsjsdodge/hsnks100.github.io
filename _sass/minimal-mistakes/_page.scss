@@ -64,7 +64,9 @@ body {
       margin-right: 0;
       width: 100%;
       clear: both;
-      border-bottom: 1px dotted #ccc;
+      p {
+          border-bottom: 1px dotted #ccc;
+      }
     }
   }
 }
