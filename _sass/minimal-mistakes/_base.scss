@@ -331,7 +331,6 @@ nav {
    ========================================================================== */
 
 i,
-strong,
 em,
 blockquote,
 p,
@@ -356,6 +355,6 @@ input[type="submit"],
 }
 
 
-b {
+b, strong {
   background-color: #ebfc8f;
 }
