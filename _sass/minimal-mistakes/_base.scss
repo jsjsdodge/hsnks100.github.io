@@ -330,7 +330,6 @@ nav {
    Global animation transition
    ========================================================================== */
 
-b,
 i,
 strong,
 em,
@@ -354,5 +353,9 @@ input[type="submit"],
 .archive__item-teaser {
   -webkit-transition: $global-transition;
   transition: $global-transition; 
+}
+
+
+b {
   background-color: #ebfc8f;
 }
